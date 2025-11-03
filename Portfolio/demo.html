@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .glitch {
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            color: #fff;
+            letter-spacing: 0.8rem;
+            animation: glitch-skew 1s infinite;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .glitch::before {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: -2px;
+            width: 100%;
+            color: #ff0000;
+            z-index: -1;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 2px;
+            width: 100%;
+            color: #ff0000;
+            z-index: -2;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(42px, 9999px, 44px, 0); }
+            25% { clip: rect(12px, 9999px, 59px, 0); }
+            50% { clip: rect(82px, 9999px, 20px, 0); }
+            75% { clip: rect(35px, 9999px, 91px, 0); }
+            100% { clip: rect(67px, 9999px, 11px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(65px, 9999px, 23px, 0); }
+            25% { clip: rect(90px, 9999px, 54px, 0); }
+            50% { clip: rect(32px, 9999px, 78px, 0); }
+            75% { clip: rect(18px, 9999px, 43px, 0); }
+            100% { clip: rect(76px, 9999px, 8px, 0); }
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            10% { transform: skew(-2deg); }
+            20% { transform: skew(0deg); }
+            30% { transform: skew(1deg); }
+            40% { transform: skew(0deg); }
+            100% { transform: skew(0deg); }
+        }
+
+        .subtitle {
+            color: #ff0000;
+            font-size: 1.4rem;
+            margin-top: 20px;
+            letter-spacing: 0.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 60px 0;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            padding: 15px 40px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            transform: translateX(-100%);
+            transition: transform 0.4s;
+            z-index: -1;
+        }
+
+        .nav-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #ff0000;
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        }
+
+        .nav-btn:hover::before {
+            transform: translateX(0);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+        }
+
+        .section {
+            margin: 120px 0;
+            padding: 60px;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(30, 20, 20, 0.6) 100%);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+            position: relative;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, transparent, #ff0000);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0000, transparent);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .skill-card {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+            border: 2px solid transparent;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 0, 0, 0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+        }
+
+        .skill-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: #ff0000;
+            box-shadow: 0 15px 40px rgba(255, 0, 0, 0.4);
+            background: linear-gradient(135deg, #2a0a0a 0%, #1a0505 100%);
+        }
+
+        .skill-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            transition: all 0.4s;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: rotateY(360deg);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            padding: 40px;
+            transition: all 0.5s;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.2) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s;
+        }
+
+        .project-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #ff0000;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .project-card:hover::before {
+            transform: scale(1);
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 0, 0, 0.4);
+            border-color: #ff0000;
+        }
+
+        .project-card h3 {
+            color: #ff0000;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+        }
+
+        .project-card p {
+            line-height: 1.8;
+            color: #ccc;
+            font-size: 1.05rem;
+        }
+
+        .project-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(255, 0, 0, 0.1);
+            transition: all 0.5s;
+        }
+
+        .project-card:hover .project-number {
+            color: rgba(255, 0, 0, 0.3);
+            transform: scale(1.2);
+        }
+
+        .contact-form {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            color: #ff0000;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 18px 20px;
+            background: rgba(26, 26, 26, 0.8);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s;
+            clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            background: rgba(26, 26, 26, 1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 180px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border: none;
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.4s;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .submit-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(255, 0, 0, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 60px;
+            margin-top: 120px;
+            border-top: 2px solid rgba(255, 0, 0, 0.3);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+        }
+
+        .social-links a {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            transition: all 0.4s;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border-color: #ff0000;
+            transform: translateY(-5px) rotate(5deg);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .glitch {
+                font-size: 2.5rem;
+                letter-spacing: 0.3rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 30px;
+                margin: 60px 0;
+            }
+
+            nav {
+                gap: 20px;
+            }
+
+            .nav-btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="particles-canvas"></canvas>
+    <div class="background-grid"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="glitch" data-text="DEVELOPER">DEVELOPER</h1>
+            <p class="subtitle">Full Stack Engineer</p>
+        </header>
+
+        <nav>
+            <button class="nav-btn" onclick="scrollToSection('about')">About</button>
+            <button class="nav-btn" onclick="scrollToSection('skills')">Skills</button>
+            <button class="nav-btn" onclick="scrollToSection('projects')">Projects</button>
+            <button class="nav-btn" onclick="scrollToSection('contact')">Contact</button>
+        </nav>
+
+        <section id="about" class="section">
+            <h2>About Me</h2>
+            <p style="line-height: 2; font-size: 1.15rem; color: #ddd;">
+                I'm a passionate developer specializing in creating cutting-edge digital experiences. 
+                With expertise in modern web technologies and a keen eye for design, I transform ideas 
+                into powerful, scalable applications. My focus is on writing clean, efficient code and 
+                delivering solutions that exceed expectations. I thrive on challenges and constantly 
+                push the boundaries of what's possible in web development.
+            </p>
+        </section>
+
+        <section id="skills" class="section">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">JS</div>
+                    <h3 style="color: #ff0000;">JavaScript</h3>
+                    <p style="color: #888;">ES6+ Modern</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">R</div>
+                    <h3 style="color: #ff0000;">React</h3>
+                    <p style="color: #888;">Frontend Dev</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">N</div>
+                    <h3 style="color: #ff0000;">Node.js</h3>
+                    <p style="color: #888;">Backend API</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">P</div>
+                    <h3 style="color: #ff0000;">Python</h3>
+                    <p style="color: #888;">Development</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">M</div>
+                    <h3 style="color: #ff0000;">MongoDB</h3>
+                    <p style="color: #888;">Database</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">A</div>
+                    <h3 style="color: #ff0000;">AWS</h3>
+                    <p style="color: #888;">Cloud Infra</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <span class="project-number">01</span>
+                    <h3>AI Dashboard</h3>
+                    <p>A comprehensive analytics platform with real-time data visualization and machine learning insights. Features predictive analytics, custom reporting, and seamless integration with multiple data sources.</p>
+                </div>
+                <div class="project-card">
+                    <span class="project-number">02</span>
+                    <h3>E-Commerce Platform</h3>
+                    <p>Full-stack e-commerce solution with secure payment integration, advanced inventory management, and intelligent product recommendations powered by AI algorithms.</p>
+                </div>
+                <div class="project-card">
+                    <span class="project-number">03</span>
+                    <h3>Neural Network Visualizer</h3>
+                    <p>Interactive tool for visualizing and training neural networks directly in the browser. Includes real-time performance metrics and customizable architecture design.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Get In Touch</h2>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Form submitted! (Demo only)');">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" required placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea required placeholder="Tell me about your project..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </section>
+
+        <footer>
+            <div class="social-links">
+                <a href="#" title="GitHub">GH</a>
+                <a href="#" title="LinkedIn">LI</a>
+                <a href="#" title="Twitter">TW</a>
+                <a href="#" title="Dribbble">DR</a>
+            </div>
+            <p style="color: #666; letter-spacing: 2px;">&copy; 2025 DEVELOPER PORTFOLIO. ALL RIGHTS RESERVED.</p>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        const particleCount = 100;
+        const connectionDistance = 150;
+        let mouse = { x: null, y: null, radius: 150 };
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (mouse.x !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        const angle = Math.atan2(dy, dx);
+                        this.vx -= Math.cos(angle) * force * 0.2;
+                        this.vy -= Math.sin(angle) * force * 0.2;
+                    }
+                }
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+                const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+                if (speed > 2) {
+                    this.vx = (this.vx / speed) * 2;
+                    this.vy = (this.vy / speed) * 2;
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(255, 0, 0, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function init() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function connectParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < connectionDistance) {
+                        const opacity = (1 - distance / connectionDistance) * 0.3;
+                        ctx.strokeStyle = `rgba(255, 0, 0, ${opacity})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            init();
+        });
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
